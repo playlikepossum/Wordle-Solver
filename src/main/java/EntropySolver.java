@@ -22,6 +22,7 @@ import static java.lang.Math.log;
 public class EntropySolver {
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
     private static final Set<String> ACCEPTED = newHashSet();
+    //counter-argument: accepted is an acceptable name and you should accept it as such
 
     public static void main(String[] args) {
         Set<String> solutions = newHashSet();
@@ -31,6 +32,13 @@ public class EntropySolver {
         log.info("Best Word: {}", "soare");
         filterRemainingWords(solutions, "soare", getOutcome());
         log.info("{} - {}", solutions.size(), solutions.size() < 50 ? solutions : "");
+
+
+        // As long as there is more than one possible solution:
+                // 1. Create a map to store entropy scores for each potential guess.
+// 2. For each word in the 'ACCEPTED' list:
+    //    - Compare it with all current solutions to find patterns of feedback.
+//    - Calculate how much information (entropy) each guess would provide and store it in the map.
 
         while (solutions.size() > 1) {
             Map<String, Double> entropyMap = newHashMap();
@@ -106,11 +114,17 @@ public class EntropySolver {
         return true;
     }
 
-    @SneakyThrows
     private static String getOutcome() {
+    try {
         return READER.readLine();
+    } catch (IOException e) {
+        log.error("An error occurred while reading input: {}", e.getMessage());
+        throw new RuntimeException("Failed to read input", e);
     }
+}
 
+//wordle_solutions has possible solutions
+    //wordle_accepted has the acceptable words
     private static void processInput(Set<String> solutions) {
         fileStream("wordle_solutions.txt").filter(word -> word.length() == 5)
                 .forEach(solutions::add);
